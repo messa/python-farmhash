@@ -23,6 +23,10 @@
 #define PY_SSIZE_T_CLEAN
 #include "Python.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 static PyObject *py_farmhash_Hash32(PyObject *self, PyObject *args);
 static PyObject *py_farmhash_Hash32WithSeed(PyObject *self, PyObject *args);
 static PyObject *py_farmhash_Hash64(PyObject *self, PyObject *args);
@@ -33,7 +37,11 @@ static PyObject *py_farmhash_Fingerprint32(PyObject *self, PyObject *args);
 static PyObject *py_farmhash_Fingerprint64(PyObject *self, PyObject *args);
 static PyObject *py_farmhash_Fingerprint128(PyObject *self, PyObject *args);
 
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit_farmhash(void);
+#else
 PyMODINIT_FUNC initfarmhash(void);
+#endif
 
 #define HASH32_DOCSTRING      "Hash function for a string.  Most useful in 32-bit binaries. \nexample: print farmhash.hash32('abc')\n2521517342"
 #define HASH32WITHSEED_DOCSTRING      "Hash function for a string.  For convenience, a 32-bit seed is also hashed into the result. \nexample: print farmhash.hash32withseed('abc', 1234)\n2521517342"
@@ -51,4 +59,8 @@ PyMODINIT_FUNC initfarmhash(void);
 
 #ifdef __linux
 #define inline __inline
+#endif
+
+#ifdef __cplusplus
+} // extern "C"
 #endif
